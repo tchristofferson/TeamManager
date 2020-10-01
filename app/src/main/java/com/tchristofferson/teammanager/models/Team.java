@@ -15,7 +15,6 @@ public class Team {
 
     private Team(List<Player> players) {
         this.players = players;
-        players.add(new Player("Trent", "6086170527"));
     }
 
     public int getTotalPlayers() {
