@@ -1,6 +1,7 @@
 package com.tchristofferson.teammanager;
 
 import android.app.Application;
+import android.os.Bundle;
 
 import com.tchristofferson.teammanager.models.Team;
 
@@ -14,6 +15,14 @@ public class TeamManagerApplication extends Application {
     public void onCreate() {
         super.onCreate();
         team = new Team(new ArrayList<>());
+    }
+
+    public static void saveState(Bundle outState) {
+        //TODO: implement save state
+    }
+
+    public static void restoreState(Bundle savedInstanceState) {
+        //TODO: implement restore state
     }
 
     public static Team getTeam() {
