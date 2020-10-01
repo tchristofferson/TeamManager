@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tchristofferson.teammanager.AtBatActivity;
 import com.tchristofferson.teammanager.R;
+import com.tchristofferson.teammanager.TeamManagerApplication;
 import com.tchristofferson.teammanager.models.Player;
 import com.tchristofferson.teammanager.models.Team;
 
@@ -26,7 +27,7 @@ public class AtBatsListAdapter extends RecyclerView.Adapter<AtBatsListAdapter.At
 
     public AtBatsListAdapter(int playerPosition) {
         this.playerPosition = playerPosition;
-        this.player = Team.getInstance().getPlayer(playerPosition);
+        this.player = TeamManagerApplication.getTeam().getPlayer(playerPosition);
     }
 
     @NonNull

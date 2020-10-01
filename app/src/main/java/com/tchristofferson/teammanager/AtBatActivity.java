@@ -30,7 +30,7 @@ public class AtBatActivity extends AppCompatActivity {
         int playerPosition = bundle.getInt(getString(R.string.player_position_key));
         int atBatPosition = bundle.getInt(getString(R.string.at_bat_position_key));
 
-        Team team = Team.getInstance();
+        Team team = TeamManagerApplication.getTeam();
         Player player = team.getPlayer(playerPosition);
         AtBat atBat = player.getAtBat(atBatPosition);
 

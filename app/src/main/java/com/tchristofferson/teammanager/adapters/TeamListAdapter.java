@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tchristofferson.teammanager.PlayerActivity;
 import com.tchristofferson.teammanager.R;
+import com.tchristofferson.teammanager.TeamManagerApplication;
 import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamVi
 
     @Override
     public void onBindViewHolder(@NonNull final TeamViewHolder holder, int position) {
-        Team team = Team.getInstance();
+        Team team = TeamManagerApplication.getTeam();
         //Setting the text of the row through the view holder, which represents a row
         holder.textView.setText(team.getPlayer(position).getName());
         holder.position = position;
@@ -42,7 +43,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamVi
     @Override
     public int getItemCount() {
         //Returns the number of players/rows to display in the recycler view
-        return Team.getInstance().getTotalPlayers();
+        return TeamManagerApplication.getTeam().getTotalPlayers();
     }
 
     /*

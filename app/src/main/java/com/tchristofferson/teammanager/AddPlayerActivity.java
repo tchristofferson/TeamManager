@@ -44,7 +44,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_player_btn);
 
         saveButton.setOnClickListener(v -> {
-            Team team = Team.getInstance();
+            Team team = TeamManagerApplication.getTeam();
             String name = nameEditText.getText().toString().trim();
             String phone = phoneEditText.getText().toString().trim();
 

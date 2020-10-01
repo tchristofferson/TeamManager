@@ -26,7 +26,7 @@ public class PlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_player);
 
         int playerPosition = getIntent().getExtras().getInt(getString(R.string.player_position_key));
-        Player player = Team.getInstance().getPlayer(playerPosition);
+        Player player = TeamManagerApplication.getTeam().getPlayer(playerPosition);
 
         ActionBar actionBar = getSupportActionBar();
 

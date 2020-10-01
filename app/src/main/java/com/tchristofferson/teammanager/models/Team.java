@@ -1,19 +1,12 @@
 package com.tchristofferson.teammanager.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Team {
 
-    private static final Team team = new Team(new ArrayList<>());
-
-    public static Team getInstance() {
-        return team;
-    }
-
     private final List<Player> players;
 
-    private Team(List<Player> players) {
+    public Team(List<Player> players) {
         this.players = players;
     }
 
