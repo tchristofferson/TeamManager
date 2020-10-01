@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.tchristofferson.teammanager.AtBatActivity;
 import com.tchristofferson.teammanager.R;
+import com.tchristofferson.teammanager.models.Player;
+import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +20,14 @@ import androidx.recyclerview.widget.RecyclerView;
  * Similar to TeamListAdapter
  */
 public class AtBatsListAdapter extends RecyclerView.Adapter<AtBatsListAdapter.AtBatsViewHolder> {
+
+    private final int playerPosition;
+    private final Player player;
+
+    public AtBatsListAdapter(int playerPosition) {
+        this.playerPosition = playerPosition;
+        this.player = Team.getInstance().getPlayer(playerPosition);
+    }
 
     @NonNull
     @Override
@@ -33,26 +43,25 @@ public class AtBatsListAdapter extends RecyclerView.Adapter<AtBatsListAdapter.At
     @Override
     public void onBindViewHolder(@NonNull AtBatsViewHolder holder, int position) {
         //Setting the text of the row through the view holder, which represents a row
-        holder.textView.setText("At Bat " + position + ": Single");
+        holder.textView.setText(player.getAtBat(position).getResult().toString());
         //Also need to set the position so it can be passed onto the next activity
-        //Used for the number in At Bat 1, At Bat 2, etc.
-        holder.position = position;
+        holder.atBatPosition = position;
     }
 
     @Override
     public int getItemCount() {
         //Returns the number of at bats/rows to display in the recycler view
-        return 3;
+        return player.getAtBats().size();
     }
 
     /*
      * A Recycler View Holder represents a row in the recycler view
      */
-    public static class AtBatsViewHolder extends RecyclerView.ViewHolder {
+    public class AtBatsViewHolder extends RecyclerView.ViewHolder {
 
         private final Context context;
         private final TextView textView;
-        private int position;
+        private int atBatPosition;
 
         public AtBatsViewHolder(@NonNull View view) {
             super(view);
@@ -64,7 +73,8 @@ public class AtBatsListAdapter extends RecyclerView.Adapter<AtBatsListAdapter.At
                 //When a user clicks a row (text view in row) the AtBatActivity is started
                 Intent intent = new Intent(context, AtBatActivity.class);
                 //Passing the position/at bat number to the intent so the next activity can use it
-                intent.putExtra(context.getString(R.string.list_item_position), position);
+                intent.putExtra(context.getString(R.string.player_position_key), playerPosition);
+                intent.putExtra(context.getString(R.string.at_bat_position_key), atBatPosition);
                 context.startActivity(intent);
             });
         }

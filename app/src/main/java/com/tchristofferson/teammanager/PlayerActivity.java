@@ -5,6 +5,8 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.tchristofferson.teammanager.adapters.PlayerPagerAdapter;
+import com.tchristofferson.teammanager.models.Player;
+import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -16,24 +18,28 @@ import androidx.viewpager2.widget.ViewPager2;
  */
 public class PlayerActivity extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager;
+    private PlayerPagerAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
+
+        int playerPosition = getIntent().getExtras().getInt(getString(R.string.player_position_key));
+        Player player = Team.getInstance().getPlayer(playerPosition);
+
         ActionBar actionBar = getSupportActionBar();
 
         //Setting the action bar title to Player #, the number is fetched from the intent which corresponds to MainActivity recycler view number/row
         if (actionBar != null)
-            actionBar.setTitle("Player " + getIntent().getExtras().getInt(getString(R.string.list_item_position)));
+            actionBar.setTitle(player.getName());
 
         //Setting views
-        tabLayout = findViewById(R.id.player_tabs);
-        viewPager = findViewById(R.id.player_view_pager);
+        TabLayout tabLayout = findViewById(R.id.player_tabs);
+        ViewPager2 viewPager = findViewById(R.id.player_view_pager);
         //Setting ViewPager2's adapter
-        viewPager.setAdapter(new PlayerPagerAdapter(this));
+        adapter = new PlayerPagerAdapter(this, playerPosition);
+        viewPager.setAdapter(adapter);
 
         //Setting the tab mediator
         //Used to determine the text/title for each tab

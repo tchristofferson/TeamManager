@@ -19,6 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class AtBatsFragment extends Fragment {
 
+    private final int playerPosition;
+    private AtBatsListAdapter adapter;
+
+    public AtBatsFragment(int playerPosition) {
+        this.playerPosition = playerPosition;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -28,7 +35,8 @@ public class AtBatsFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.at_bats_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new AtBatsListAdapter());
+        adapter = new AtBatsListAdapter(playerPosition);
+        recyclerView.setAdapter(adapter);
         //Sets lines in between each row of the recycler view
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
@@ -37,10 +45,17 @@ public class AtBatsFragment extends Fragment {
             //When button is clicked the AtBatActivity is started
             Intent intent = new Intent(getContext(), AtBatActivity.class);
             //Adding the position/at bat number to the intent for the next activity to use
-            intent.putExtra(getString(R.string.list_item_position), 3);
+            intent.putExtra(getString(R.string.player_position_key), playerPosition);
+            intent.putExtra(getString(R.string.at_bat_position_key), -1);
             startActivity(intent);
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

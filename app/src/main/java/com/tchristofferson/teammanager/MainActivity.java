@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class MainActivity extends AppCompatActivity {
 
+    private TeamListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,8 +34,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        adapter = new TeamListAdapter();
         //Setting a custom recycler view adapter
-        recyclerView.setAdapter(new TeamListAdapter());
+        recyclerView.setAdapter(adapter);
         //Adding recycler view decoration. It adds the lines beneath each row
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
@@ -41,7 +44,14 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.add_player_btn).setOnClickListener(v -> {
             //Starting a new activity (AddPlayerActivity)
             Intent intent = new Intent(MainActivity.this, AddPlayerActivity.class);
+            intent.putExtra(getString(R.string.is_new_player_key), true);
             startActivity(intent);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

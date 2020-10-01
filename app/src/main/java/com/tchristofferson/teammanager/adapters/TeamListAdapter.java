@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.tchristofferson.teammanager.PlayerActivity;
 import com.tchristofferson.teammanager.R;
+import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,18 +33,16 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamVi
 
     @Override
     public void onBindViewHolder(@NonNull final TeamViewHolder holder, int position) {
+        Team team = Team.getInstance();
         //Setting the text of the row through the view holder, which represents a row
-        holder.textView.setText("Player " + position);
-        //Also need to set the position so it can be passed onto the next activity
-        //Used for the number in Player 1, Player 2, etc.
-        //Will be replaced in the future with the player's name
+        holder.textView.setText(team.getPlayer(position).getName());
         holder.position = position;
     }
 
     @Override
     public int getItemCount() {
         //Returns the number of players/rows to display in the recycler view
-        return 10;
+        return Team.getInstance().getTotalPlayers();
     }
 
     /*
@@ -65,7 +64,7 @@ public class TeamListAdapter extends RecyclerView.Adapter<TeamListAdapter.TeamVi
                 //When a user clicks a row (text view in row) the PlayerActivity is started
                 Intent intent = new Intent(context, PlayerActivity.class);
                 //Passing the position/player number to the intent so the next activity can use it
-                intent.putExtra(context.getString(R.string.list_item_position), position);
+                intent.putExtra(context.getString(R.string.player_position_key), position);
                 context.startActivity(intent);
             });
         }

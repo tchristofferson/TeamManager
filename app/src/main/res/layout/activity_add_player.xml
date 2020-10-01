@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/name_edit_text"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextPhone"
+        android:id="@+id/phone_edit_text"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -26,10 +26,10 @@
         android:inputType="phone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
+        app:layout_constraintTop_toBottomOf="@+id/name_edit_text" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/save_player_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"

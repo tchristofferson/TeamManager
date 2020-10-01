@@ -13,8 +13,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
  */
 public class PlayerPagerAdapter extends FragmentStateAdapter {
 
-    public PlayerPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
+    private final int playerPosition;
+
+    public PlayerPagerAdapter(@NonNull FragmentActivity fragmentActivity, int playerPosition) {
         super(fragmentActivity);
+        this.playerPosition = playerPosition;
     }
 
     @NonNull
@@ -23,7 +26,7 @@ public class PlayerPagerAdapter extends FragmentStateAdapter {
         //Determining the fragment depending on the tab position
         //If it is the first tab return AtBatsFragment
         if (position == 0)
-            return new AtBatsFragment();
+            return new AtBatsFragment(playerPosition);
 
         //Else return StatsFragment
         return new StatsFragment();

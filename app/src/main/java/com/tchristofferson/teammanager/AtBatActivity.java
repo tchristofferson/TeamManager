@@ -1,7 +1,16 @@
 package com.tchristofferson.teammanager;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.tchristofferson.teammanager.models.AtBat;
+import com.tchristofferson.teammanager.models.Player;
+import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -12,95 +21,64 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AtBatActivity extends AppCompatActivity {
 
-    private TextView ballsTextView;
-    private TextView strikesTextView;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_at_bat);
+        Bundle bundle = getIntent().getExtras();
+
+        int playerPosition = bundle.getInt(getString(R.string.player_position_key));
+        int atBatPosition = bundle.getInt(getString(R.string.at_bat_position_key));
+
+        Team team = Team.getInstance();
+        Player player = team.getPlayer(playerPosition);
+        AtBat atBat = player.getAtBat(atBatPosition);
+
+        if (atBat == null)
+            atBat = new AtBat(0, 0, AtBat.Result.values()[0]);
 
         ActionBar actionBar = getSupportActionBar();
 
         //Setting the action bar title. Using string resource for the key in the intent to store the at bat number/row from AtBats fragment recycler view
         if (actionBar != null)
-            actionBar.setTitle("At Bat " + getIntent().getExtras().getInt(getString(R.string.list_item_position)) + ": Single");
+            actionBar.setTitle("At Bat");
 
         //Setting text view
-        ballsTextView = findViewById(R.id.balls_count);
-        strikesTextView = findViewById(R.id.strikes_count);
+        TextView ballsTextView = findViewById(R.id.balls_count);
+        TextView strikesTextView = findViewById(R.id.strikes_count);
+        Spinner spinner = findViewById(R.id.at_bat_result_spinner);
+        Button saveButton = findViewById(R.id.at_bat_save_btn);
+        spinner.setAdapter(new ArrayAdapter<>(this, R.layout.spinner_item, AtBat.Result.values()));
+        final AtBat finalAtBat = atBat;
 
-        /*
-         * Setting add and subtract buttons' listeners
-         * There are two buttons (add & subtract) for balls and strikes counter
-         */
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                finalAtBat.setResult(AtBat.Result.values()[position]);
+            }
 
-        findViewById(R.id.sub_ball_btn).setOnClickListener(v -> {
-            int balls = getBalls() - 1;
-
-            //Make sure balls don't go below 0
-            if (balls < 0)
-                balls = 0;
-
-            setBalls(balls);
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                spinner.setSelection(0);
+            }
         });
 
-        findViewById(R.id.add_ball_btn).setOnClickListener(v -> {
-            int balls = getBalls() + 1;
+        saveButton.setOnClickListener(v -> {
+            if (atBatPosition == -1) {
+                player.addAtBat(finalAtBat);
+            } else {
+                int strikes = Integer.parseInt(strikesTextView.getText().toString());
+                int balls = Integer.parseInt(ballsTextView.getText().toString());
 
-            //Make sure balls don't go over 4
-            if (balls > 4)
-                balls = 4;
+                finalAtBat.setStrikes(strikes);
+                finalAtBat.setBalls(balls);
+                finalAtBat.setResult((AtBat.Result) spinner.getSelectedItem());
+            }
 
-            setBalls(balls);
+            finish();
         });
 
-        findViewById(R.id.sub_strike_btn).setOnClickListener(v -> {
-            int strikes = getStrikes() - 1;
-
-            //Make sure strikes don't go below 0
-            if (strikes < 0)
-                strikes = 0;
-
-            setStrikes(strikes);
-        });
-
-        findViewById(R.id.add_strike_btn).setOnClickListener(v -> {
-            int strikes = getStrikes() + 1;
-
-            //Make sure strikes don't go over 3
-            if (strikes > 3)
-                strikes = 3;
-
-            setStrikes(strikes);
-        });
-    }
-
-    /*
-     * Private methods to conform to DRY (don't repeat yourself)
-     */
-
-    private void setBalls(int balls) {
-        setTextViewNumber(ballsTextView, balls);
-    }
-
-    private void setStrikes(int strikes) {
-        setTextViewNumber(strikesTextView, strikes);
-    }
-
-    private void setTextViewNumber(TextView textView, int n) {
-        textView.setText(String.valueOf(n));
-    }
-
-    private int getBalls() {
-        return getIntFromTextView(ballsTextView);
-    }
-
-    private int getStrikes() {
-        return getIntFromTextView(strikesTextView);
-    }
-
-    private int getIntFromTextView(TextView textView) {
-        return Integer.parseInt(textView.getText().toString());
+        ballsTextView.setText(String.valueOf(atBat.getBalls()));
+        strikesTextView.setText(String.valueOf(atBat.getStrikes()));
     }
 }
