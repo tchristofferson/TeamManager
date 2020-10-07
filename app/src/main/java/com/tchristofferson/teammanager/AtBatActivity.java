@@ -21,6 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AtBatActivity extends AppCompatActivity {
 
+    private TextView ballsTextView;
+    private TextView strikesTextView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,11 +47,12 @@ public class AtBatActivity extends AppCompatActivity {
             actionBar.setTitle("At Bat");
 
         //Setting text view
-        TextView ballsTextView = findViewById(R.id.balls_count);
-        TextView strikesTextView = findViewById(R.id.strikes_count);
+        ballsTextView = findViewById(R.id.balls_count);
+        strikesTextView = findViewById(R.id.strikes_count);
         Spinner spinner = findViewById(R.id.at_bat_result_spinner);
         Button saveButton = findViewById(R.id.at_bat_save_btn);
         spinner.setAdapter(new ArrayAdapter<>(this, R.layout.spinner_item, AtBat.Result.values()));
+        spinner.setSelection(atBat.getResult().ordinal());
         final AtBat finalAtBat = atBat;
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -80,5 +84,62 @@ public class AtBatActivity extends AppCompatActivity {
 
         ballsTextView.setText(String.valueOf(atBat.getBalls()));
         strikesTextView.setText(String.valueOf(atBat.getStrikes()));
+
+        Button subBallButton = findViewById(R.id.sub_ball_btn);
+        Button addBallButton = findViewById(R.id.add_ball_btn);
+        Button subStrikeButton = findViewById(R.id.sub_strike_btn);
+        Button addStrikeButton = findViewById(R.id.add_strike_btn);
+
+        subBallButton.setOnClickListener(v -> {
+            int balls = decrementAndGet(finalAtBat.getBalls());
+            setBalls(balls, finalAtBat);
+        });
+
+        addBallButton.setOnClickListener(v -> {
+            int balls = incrementAndGet(finalAtBat.getBalls(), 4);
+            setBalls(balls, finalAtBat);
+        });
+
+        subStrikeButton.setOnClickListener(v -> {
+            int strikes = decrementAndGet(finalAtBat.getStrikes());
+            setStrikes(strikes, finalAtBat);
+        });
+
+        addStrikeButton.setOnClickListener(v -> {
+            int strikes = incrementAndGet(finalAtBat.getStrikes(), 3);
+            setStrikes(strikes, finalAtBat);
+        });
+    }
+
+    private int decrementAndGet(int i) {
+        i -= 1;
+
+        if (i < 0)
+            i = 0;
+
+        return i;
+    }
+
+    private int incrementAndGet(int i, int upperLimit) {
+        i += 1;
+
+        if (i > upperLimit)
+            i = upperLimit;
+
+        return i;
+    }
+
+    private void setStrikes(int strikes, AtBat atBat) {
+        atBat.setStrikes(strikes);
+        setTextView(strikes, strikesTextView);
+    }
+
+    private void setBalls(int balls, AtBat atBat) {
+        atBat.setBalls(balls);
+        setTextView(balls, ballsTextView);
+    }
+
+    private void setTextView(int i, TextView textView) {
+        textView.setText(String.valueOf(i));
     }
 }

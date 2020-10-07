@@ -2,20 +2,20 @@ package com.tchristofferson.teammanager.models;
 
 import android.os.Parcel;
 
+/* Represents an at-bat for a player */
 public class AtBat {
 
+    //number of strikes
     private int strikes;
+    //number of balls
     private int balls;
+    //The result/outcome of the at-bat
     private Result result;
 
     public AtBat(int strikes, int balls, Result result) {
         this.strikes = strikes;
         this.balls = balls;
         this.result = result;
-    }
-
-    protected AtBat(Parcel in) {
-        this(in.readInt(), in.readInt(), Result.valueOf(in.readString()));
     }
 
     public int getStrikes() {
@@ -42,6 +42,7 @@ public class AtBat {
         this.result = result;
     }
 
+    //Represents the result/outcome of an at-bat
     public enum Result {
         SINGLE("Single"),
         DOUBLE("Double"),
@@ -56,6 +57,7 @@ public class AtBat {
         OUT("Out"),
         SACRIFICE_BUNT("Sac Bunt");
 
+        //The string that will be displayed on screen for a specific Result
         private final String displayName;
 
         Result(String displayName) {

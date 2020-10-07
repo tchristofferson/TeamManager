@@ -11,7 +11,6 @@ import com.tchristofferson.teammanager.AtBatActivity;
 import com.tchristofferson.teammanager.R;
 import com.tchristofferson.teammanager.TeamManagerApplication;
 import com.tchristofferson.teammanager.models.Player;
-import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

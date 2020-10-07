@@ -3,10 +3,14 @@ package com.tchristofferson.teammanager.models;
 import java.util.ArrayList;
 import java.util.List;
 
+/* Represents a player on the team */
 public class Player {
 
+    //Player's name
     private String name;
+    //Player's phone number
     private String phone;
+    //A List of all of the player's at-bats
     private final List<AtBat> atBats;
 
     public Player(String name, String phone, List<AtBat> atBats) {

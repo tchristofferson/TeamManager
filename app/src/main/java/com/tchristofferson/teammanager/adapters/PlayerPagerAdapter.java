@@ -1,5 +1,6 @@
 package com.tchristofferson.teammanager.adapters;
 
+import com.tchristofferson.teammanager.TeamManagerApplication;
 import com.tchristofferson.teammanager.fragments.AtBatsFragment;
 import com.tchristofferson.teammanager.fragments.StatsFragment;
 
@@ -29,7 +30,7 @@ public class PlayerPagerAdapter extends FragmentStateAdapter {
             return new AtBatsFragment(playerPosition);
 
         //Else return StatsFragment
-        return new StatsFragment();
+        return new StatsFragment(TeamManagerApplication.getTeam().getPlayer(playerPosition));
     }
 
     @Override

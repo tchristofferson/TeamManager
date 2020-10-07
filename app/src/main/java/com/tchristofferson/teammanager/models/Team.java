@@ -2,8 +2,10 @@ package com.tchristofferson.teammanager.models;
 
 import java.util.List;
 
+/* Represents the entire team of players */
 public class Team {
 
+    //List of all players on the team
     private final List<Player> players;
 
     public Team(List<Player> players) {
