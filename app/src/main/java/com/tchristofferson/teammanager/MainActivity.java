@@ -54,4 +54,10 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         adapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        TeamManagerApplication.saveTeam(getApplicationContext());
+    }
 }

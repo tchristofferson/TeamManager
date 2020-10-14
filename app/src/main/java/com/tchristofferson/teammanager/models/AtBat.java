@@ -2,6 +2,8 @@ package com.tchristofferson.teammanager.models;
 
 import android.os.Parcel;
 
+import java.util.Objects;
+
 /* Represents an at-bat for a player */
 public class AtBat {
 
@@ -40,6 +42,21 @@ public class AtBat {
 
     public void setResult(Result result) {
         this.result = result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AtBat atBat = (AtBat) o;
+        return strikes == atBat.strikes &&
+                balls == atBat.balls &&
+                result == atBat.result;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(strikes, balls, result);
     }
 
     //Represents the result/outcome of an at-bat

@@ -111,6 +111,12 @@ public class AtBatActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        TeamManagerApplication.saveTeam(getApplicationContext());
+    }
+
     private int decrementAndGet(int i) {
         i -= 1;
 

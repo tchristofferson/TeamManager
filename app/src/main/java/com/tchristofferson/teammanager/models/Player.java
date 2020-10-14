@@ -2,6 +2,7 @@ package com.tchristofferson.teammanager.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /* Represents a player on the team */
 public class Player {
@@ -56,5 +57,20 @@ public class Player {
             return null;
 
         return atBats.get(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return name.equals(player.name) &&
+                phone.equals(player.phone) &&
+                atBats.equals(player.atBats);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, phone, atBats);
     }
 }

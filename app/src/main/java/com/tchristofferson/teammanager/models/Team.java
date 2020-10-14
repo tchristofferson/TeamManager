@@ -1,6 +1,7 @@
 package com.tchristofferson.teammanager.models;
 
 import java.util.List;
+import java.util.Objects;
 
 /* Represents the entire team of players */
 public class Team {
@@ -36,5 +37,18 @@ public class Team {
             return null;
 
         return players.remove(index);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return players.equals(team.players);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(players);
     }
 }

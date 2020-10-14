@@ -1,15 +1,11 @@
 package com.tchristofferson.teammanager;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.tchristofferson.teammanager.adapters.PlayerPagerAdapter;
-import com.tchristofferson.teammanager.fragments.StatsFragment;
 import com.tchristofferson.teammanager.models.Player;
-import com.tchristofferson.teammanager.models.Team;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -57,5 +53,11 @@ public class PlayerActivity extends AppCompatActivity {
                 tab.setText(R.string.stats);
 
         }).attach();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        TeamManagerApplication.saveTeam(getApplicationContext());
     }
 }

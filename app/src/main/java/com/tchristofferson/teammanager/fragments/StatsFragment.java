@@ -54,16 +54,19 @@ public class StatsFragment extends Fragment {
         onBasePercentageTextView = view.findViewById(R.id.obp_textview);
         sluggingAverageTextView = view.findViewById(R.id.slg_textview);
         battingAverageTextView = view.findViewById(R.id.ba_textview);
+        updateStats();
 
         return view;
     }
 
+    //Runs every time the user switches from at-bats tab to stats
     @Override
     public void onResume() {
         super.onResume();
         updateStats();
     }
 
+    //Updates the stats page
     private void updateStats() {
         List<AtBat> atBats = player.getAtBats();
         int strikeouts, outs, walks, sacBunts, singles, doubles, triples, homeRuns;
@@ -105,13 +108,14 @@ public class StatsFragment extends Fragment {
         /* Used for calculations */
         double successfulHits = singles + doubles + triples + homeRuns;
         double onBases = successfulHits + walks;
-        double totalAtBats = atBats.size();
-        double safeAtBats = totalAtBats == 0 ? 1 : totalAtBats;//Safe to be the denominator (can't divide by 0)
+        //If atBats size is 0 this is set to 1 to make sure I don't divide by 0
+        double totalAtBats = atBats.size() == 0 ? 1 : atBats.size();
 
-        double onBasePercentage = onBases / safeAtBats;
-        double sluggingAverage = ((singles) + (doubles * 2) + (triples * 3) + (homeRuns * 4)) / (safeAtBats - walks);
-        double battingAverage = successfulHits / (safeAtBats - walks);
+        double onBasePercentage = onBases / totalAtBats;
+        double sluggingAverage = ((singles) + (doubles * 2) + (triples * 3) + (homeRuns * 4)) / (totalAtBats - walks);
+        double battingAverage = successfulHits / (totalAtBats - walks);
 
+        /* Setting the text views on the screen */
         setTextView(atBatsTextView, atBats.size());
         setTextView(strikeoutsTextView, strikeouts);
         setTextView(outsTextView, outs);
@@ -127,11 +131,14 @@ public class StatsFragment extends Fragment {
         setTextView(battingAverageTextView, battingAverage);
     }
 
+    /* Helper methods so I don't repeat code */
+
     private void setTextView(TextView textView, int i) {
         textView.setText(String.valueOf(i));
     }
 
     private void setTextView(TextView textView, double d) {
+        //String.format makes sure there are only 3 decimal places (%.3f)
         textView.setText(String.format(Locale.US, "%.3f", d));
     }
 }
