@@ -7,13 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.tchristofferson.teammanager.AtBatActivity;
+import com.tchristofferson.teammanager.DeleteItemTouchHelper;
 import com.tchristofferson.teammanager.R;
+import com.tchristofferson.teammanager.TeamManagerApplication;
 import com.tchristofferson.teammanager.adapters.AtBatsListAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +42,12 @@ public class AtBatsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         //Sets lines in between each row of the recycler view
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        new ItemTouchHelper(new DeleteItemTouchHelper(new DeleteItemTouchHelper.Callback() {
+            @Override
+            protected void onRowSwipeDelete(int row) {
+                TeamManagerApplication.getTeam().getPlayer(playerPosition).removeAtBat(row);
+            }
+        }, adapter, getContext())).attachToRecyclerView(recyclerView);
 
         //Setting the on click listener for the circle + button
         view.findViewById(R.id.add_at_bat_btn).setOnClickListener(v -> {

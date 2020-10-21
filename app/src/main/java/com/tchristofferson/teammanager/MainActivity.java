@@ -8,6 +8,7 @@ import com.tchristofferson.teammanager.adapters.TeamListAdapter;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         //Adding recycler view decoration. It adds the lines beneath each row
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        new ItemTouchHelper(new DeleteItemTouchHelper(new DeleteItemTouchHelper.Callback() {
+            @Override
+            protected void onRowSwipeDelete(int position) {
+                TeamManagerApplication.getTeam().removePlayer(position);
+            }
+        }, adapter, this)).attachToRecyclerView(recyclerView);
 
         //Set the click listener for the circle + button
         findViewById(R.id.add_player_btn).setOnClickListener(v -> {
